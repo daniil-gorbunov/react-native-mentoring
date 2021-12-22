@@ -13,6 +13,7 @@ export const App = () => {
 
 const styles = StyleSheet.create({
   appArea: {
+    flex: 1,
     backgroundColor: '#fff',
     height: '100%',
   },
