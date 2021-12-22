@@ -12,10 +12,10 @@ export const Main: React.FC = () => {
       setProducts(nextProducts);
     };
     fetchProducts();
-  });
+  }, []);
 
   return (
-    <View>
+    <View style={styles.screenContainer}>
       <AppBar title={'Ecommerce Store'} />
       <FlatList
         ListHeaderComponent={<SearchBar />}
@@ -30,6 +30,9 @@ export const Main: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+  },
   columnWrapper: {
     margin: 10,
     justifyContent: 'space-between',

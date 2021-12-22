@@ -8,14 +8,31 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
-  product: {name, image, price, prevPrice},
+  product: {
+    id,
+    attributes: {
+      name,
+      price,
+      display_price: displayPrice,
+      compare_at_price: compareAtPrice,
+      display_compare_at_price: displayCompareAtPrice,
+    },
+  },
 }) => {
   return (
     <View style={styles.card}>
-      <Image style={styles.image} source={image} />
+      <Image
+        style={styles.image}
+        source={{uri: `https://picsum.photos/seed/${id}/100/100`}}
+      />
       <View style={styles.subtext}>
         <Text style={styles.name}>{name}</Text>
-        <PriceLine price={price} prevPrice={prevPrice} />
+        <PriceLine
+          price={price}
+          displayPrice={displayPrice}
+          compareAtPrice={compareAtPrice}
+          displayCompareAtPrice={displayCompareAtPrice}
+        />
       </View>
     </View>
   );

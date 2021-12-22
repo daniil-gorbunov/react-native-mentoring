@@ -7,21 +7,27 @@ const getDiscountLine = (newPrice: number, oldPrice?: number): string =>
     : '';
 
 interface PriceLineProps {
-  price: number;
-  prevPrice?: number;
+  price: string;
+  displayPrice: string;
+  compareAtPrice: string;
+  displayCompareAtPrice: string;
   style?: StyleProp<ViewStyle>;
 }
 
 export const PriceLine: React.FC<PriceLineProps> = ({
   price,
-  prevPrice,
+  displayPrice,
+  compareAtPrice,
+  displayCompareAtPrice,
   style: propsStyle,
 }) => {
   return (
     <View style={[styles.prices, propsStyle]}>
-      <Text style={styles.price}>${price}</Text>
-      <Text style={styles.prevPrice}>${prevPrice}</Text>
-      <Text style={styles.discount}>{getDiscountLine(price, prevPrice)}</Text>
+      <Text style={styles.price}>{displayPrice}</Text>
+      <Text style={styles.prevPrice}>{displayCompareAtPrice}</Text>
+      <Text style={styles.discount}>
+        {getDiscountLine(Number(price), Number(compareAtPrice))}
+      </Text>
     </View>
   );
 };
