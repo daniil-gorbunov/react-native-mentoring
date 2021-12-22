@@ -1,26 +1,47 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {AppBar, ColorPicker, Gallery, PriceLine, Section} from 'components';
-import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {getProduct} from 'services';
 import {Product} from 'services/products';
 
+const PRODUCT_ID = '1';
+
 export const ProductDetails: React.FC = () => {
   const [product, setProduct] = useState<Product>();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchProduct = useCallback(async (productId: string) => {
+    setRefreshing(true);
+    const nextProduct = await getProduct(productId);
+    setRefreshing(false);
+    setProduct(nextProduct);
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    fetchProduct(PRODUCT_ID);
+  }, [fetchProduct]);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const nextProduct = await getProduct('1');
-      setProduct(nextProduct);
-    };
-    fetchProduct();
-  }, []);
+    fetchProduct(PRODUCT_ID);
+  }, [fetchProduct]);
 
   return (
     <View style={styles.screenContainer}>
       <AppBar showFavButton={true} />
       {product && (
         <>
-          <ScrollView style={styles.detailsContent}>
+          <ScrollView
+            style={styles.detailsContent}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
             <View style={styles.gallery}>
               <Gallery imageUrls={product.relationships.images.data ?? []} />
             </View>
