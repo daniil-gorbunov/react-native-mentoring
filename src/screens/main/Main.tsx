@@ -16,7 +16,7 @@ export const Main: React.FC = () => {
 
   return (
     <View>
-      <AppBar />
+      <AppBar title={'Ecommerce Store'} />
       <FlatList
         ListHeaderComponent={<SearchBar />}
         columnWrapperStyle={styles.columnWrapper}

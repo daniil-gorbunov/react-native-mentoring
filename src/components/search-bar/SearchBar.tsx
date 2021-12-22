@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     borderWidth: 1,
     borderColor: 'transparent',
+    backgroundColor: '#fff',
   },
   inputContainer: {
     flexDirection: 'row',
