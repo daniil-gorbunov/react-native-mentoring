@@ -1,19 +1,13 @@
 import React, {useCallback, useState} from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Indicator} from 'components/gallery/Indicator';
 
 interface GalleryProps {
-  images: ImageSourcePropType[];
+  imageUrls: string[];
 }
 
-export const Gallery: React.FC<GalleryProps> = ({images = []}) => {
+export const Gallery: React.FC<GalleryProps> = ({imageUrls = []}) => {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
   const selectImage = useCallback((index: number) => {
@@ -21,14 +15,18 @@ export const Gallery: React.FC<GalleryProps> = ({images = []}) => {
   }, []);
 
   const showPrevImage = useCallback(() => {
-    selectImage(activeImageIdx === 0 ? images.length - 1 : activeImageIdx - 1);
-  }, [activeImageIdx, images.length, selectImage]);
+    selectImage(
+      activeImageIdx === 0 ? imageUrls.length - 1 : activeImageIdx - 1,
+    );
+  }, [activeImageIdx, imageUrls.length, selectImage]);
 
   const showNextImage = useCallback(() => {
-    selectImage(activeImageIdx === images.length - 1 ? 0 : activeImageIdx + 1);
-  }, [activeImageIdx, images.length, selectImage]);
+    selectImage(
+      activeImageIdx === imageUrls.length - 1 ? 0 : activeImageIdx + 1,
+    );
+  }, [activeImageIdx, imageUrls.length, selectImage]);
 
-  return images.length > 0 ? (
+  return imageUrls.length > 0 ? (
     <View>
       <View style={styles.container}>
         <TouchableOpacity style={styles.navButton} onPress={showPrevImage}>
@@ -37,14 +35,14 @@ export const Gallery: React.FC<GalleryProps> = ({images = []}) => {
         <Image
           style={styles.image}
           resizeMode={'contain'}
-          source={images[activeImageIdx]}
+          source={{uri: imageUrls[activeImageIdx]}}
         />
         <TouchableOpacity style={styles.navButton} onPress={showNextImage}>
           <Icon name={'navigate-next'} color={'#c3c3c3'} size={30} />
         </TouchableOpacity>
       </View>
       <Indicator
-        totalNumber={images.length}
+        totalNumber={imageUrls.length}
         activeIdx={activeImageIdx}
         onDotPress={selectImage}
       />

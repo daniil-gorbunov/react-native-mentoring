@@ -1,60 +1,54 @@
-import {ImageSourcePropType} from 'react-native';
+import axios from 'axios';
 
-const imgXiaomi = require('assets/images/xiaomi.png');
-const imgOppo = require('assets/images/oppo.png');
-const imgIphone = require('assets/images/iphone.png');
-
-const MOCK_PRODUCTS: Product[] = [
-  {
-    id: 1,
-    name: 'Xiaomi Mi A3',
-    image: require('assets/images/xiaomi.png'),
-    price: 222,
-    prevPrice: 244,
-    images: [imgXiaomi, imgOppo, imgIphone],
-    colors: ['Blue', 'Red', 'Black'],
-    description:
-      'The phone features a 6.088 inch HD+ (1560 x 720 pixel) resolution, 283ppi Super AMOLED display, a glass and plastic body, with Corning Gorilla Glass 5 protection on its front as well as its back. It is powered by a Qualcomm Snapdragon 665 SoC. It also has a 2.0, Type-C 1.0 reversible connector.',
-  },
-  {
-    id: 2,
-    name: 'OPPO K3',
-    image: require('assets/images/oppo.png'),
-    price: 150,
-    prevPrice: 200,
-    images: [imgXiaomi, imgOppo, imgIphone],
-    colors: ['Blue', 'Red', 'Black'],
-    description:
-      'The phone features a 6.088 inch HD+ (1560 x 720 pixel) resolution, 283ppi Super AMOLED display, a glass and plastic body, with Corning Gorilla Glass 5 protection on its front as well as its back. It is powered by a Qualcomm Snapdragon 665 SoC. It also has a 2.0, Type-C 1.0 reversible connector.',
-  },
-  {
-    id: 3,
-    name: 'IPhone XR',
-    image: require('assets/images/iphone.png'),
-    price: 849,
-    prevPrice: 749,
-    images: [imgXiaomi, imgOppo, imgIphone],
-    colors: ['Blue', 'Red', 'Black'],
-    description:
-      'The phone features a 6.088 inch HD+ (1560 x 720 pixel) resolution, 283ppi Super AMOLED display, a glass and plastic body, with Corning Gorilla Glass 5 protection on its front as well as its back. It is powered by a Qualcomm Snapdragon 665 SoC. It also has a 2.0, Type-C 1.0 reversible connector.',
-  },
-];
+const BASE_URL = 'https://rn-mentoring.herokuapp.com/api/v2/storefront';
 
 export interface Product {
-  id: number;
-  name: string;
-  image: ImageSourcePropType;
-  images: ImageSourcePropType[];
-  price: number;
-  prevPrice?: number;
-  description: string;
-  colors?: string[];
+  id: string;
+  type: string;
+  attributes: {
+    name: string;
+    price: string;
+    display_price: string;
+    compare_at_price: string;
+    display_compare_at_price: string;
+    description: string;
+  };
+  relationships: {
+    images: {
+      data: [];
+    };
+  };
 }
 
 export const getProducts = async (): Promise<Product[]> => {
-  return MOCK_PRODUCTS;
+  const {
+    data: {data},
+  } = await axios.get(`${BASE_URL}/products`, {
+    params: {
+      include: 'images',
+      'fields[product]':
+        'name,price,display_price,compare_at_price,display_compare_at_price',
+    },
+  });
+
+  return data;
 };
 
-export const getProduct = async (id: number): Promise<Product | undefined> => {
-  return MOCK_PRODUCTS.find(product => product.id === id);
+export const getProduct = async (id: string): Promise<Product | undefined> => {
+  const {
+    data: {data},
+  } = await axios.get(`${BASE_URL}/products/${id}`, {
+    params: {
+      include: 'images,option_types',
+      'fields[product]':
+        'name,price,display_price,compare_at_price,display_compare_at_price,description',
+    },
+  });
+
+  data.relationships.images = data.relationships.images ?? {};
+  data.relationships.images.data = Array.from({length: 5}, () =>
+    Math.floor(Math.random() * 100),
+  ).map(seed => `https://picsum.photos/seed/${seed}/100/100`);
+
+  return data;
 };

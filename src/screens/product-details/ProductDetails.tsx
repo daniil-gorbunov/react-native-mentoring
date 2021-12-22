@@ -9,7 +9,7 @@ export const ProductDetails: React.FC = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const nextProduct = await getProduct(1);
+      const nextProduct = await getProduct('1');
       setProduct(nextProduct);
     };
     fetchProduct();
@@ -22,26 +22,28 @@ export const ProductDetails: React.FC = () => {
         <>
           <ScrollView style={styles.detailsContent}>
             <View style={styles.gallery}>
-              <Gallery images={product.images ?? []} />
+              <Gallery imageUrls={product.relationships.images.data ?? []} />
             </View>
 
             <Section>
-              <Text style={styles.text}>{product.name}</Text>
+              <Text style={styles.text}>{product.attributes.name}</Text>
               <PriceLine
                 style={styles.priceLine}
-                price={product.price}
-                prevPrice={product.prevPrice}
+                price={product.attributes.price}
+                displayPrice={product.attributes.display_price}
+                compareAtPrice={product.attributes.compare_at_price}
+                displayCompareAtPrice={
+                  product.attributes.display_compare_at_price
+                }
               />
             </Section>
 
-            {product.colors && (
-              <Section header={'Select Color'}>
-                <ColorPicker colors={product.colors} />
-              </Section>
-            )}
+            <Section header={'Select Color'}>
+              <ColorPicker colors={['Red', 'Green', 'Blue']} />
+            </Section>
 
             <Section header={'Description'}>
-              <Text style={styles.text}>{product.description}</Text>
+              <Text style={styles.text}>{product.attributes.description}</Text>
             </Section>
           </ScrollView>
 
