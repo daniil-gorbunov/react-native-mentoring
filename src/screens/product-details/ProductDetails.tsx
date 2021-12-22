@@ -13,7 +13,7 @@ export const ProductDetails: React.FC = () => {
       setProduct(nextProduct);
     };
     fetchProduct();
-  });
+  }, []);
 
   return (
     <View style={styles.screenContainer}>
