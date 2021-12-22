@@ -1,12 +1,13 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 
-import {Main} from 'screens';
+import {/*Main,*/ ProductDetails} from 'screens';
 
 export const App = () => {
   return (
     <SafeAreaView style={styles.appArea}>
-      <Main />
+      {/*<Main />*/}
+      <ProductDetails />
     </SafeAreaView>
   );
 };
