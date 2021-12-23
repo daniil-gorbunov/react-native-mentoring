@@ -1,3 +1,4 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 
@@ -5,10 +6,12 @@ import {/*Main,*/ ProductDetails} from 'screens';
 
 export const App = () => {
   return (
-    <SafeAreaView style={styles.appArea}>
-      {/*<Main />*/}
-      <ProductDetails />
-    </SafeAreaView>
+    <NavigationContainer>
+      <SafeAreaView style={styles.appArea}>
+        {/*<Main />*/}
+        <ProductDetails />
+      </SafeAreaView>
+    </NavigationContainer>
   );
 };
 
