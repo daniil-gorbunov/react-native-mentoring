@@ -13,11 +13,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   return (
     <View style={styles.colorPicker}>
       {colors.map(color => (
-        <TouchableOpacity
-          key={color}
-          onPress={() => {
-            onColorPress && onColorPress(color);
-          }}>
+        <TouchableOpacity key={color} onPress={() => onColorPress?.(color)}>
           <Text style={styles.color}>{color}</Text>
         </TouchableOpacity>
       ))}

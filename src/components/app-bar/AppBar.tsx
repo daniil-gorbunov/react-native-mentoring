@@ -9,6 +9,10 @@ interface AppBarProps {
   onFavPress?: () => void;
 }
 
+const ICON_SIZE = 25;
+const ICON_COLOR = '#fff';
+const commonIconProps = {size: ICON_SIZE, color: ICON_COLOR};
+
 export const AppBar: React.FC<AppBarProps> = ({
   title = '',
   showMenuButton = false,
@@ -17,26 +21,23 @@ export const AppBar: React.FC<AppBarProps> = ({
 }) => {
   return (
     <View style={styles.barContainer}>
-      {showMenuButton ? (
-        <Icon name={'menu'} size={25} color="#fff" />
-      ) : (
-        <Icon name={'arrow-back'} size={25} color="#fff" />
-      )}
+      <Icon
+        name={showMenuButton ? 'menu' : 'arrow-back'}
+        {...commonIconProps}
+      />
       <Text style={styles.title}>{title}</Text>
       <View style={styles.icons}>
         {showFavButton && (
           <Icon
             onPress={onFavPress}
             name={'favorite-border'}
-            size={25}
-            color="#fff"
+            {...commonIconProps}
           />
         )}
         <Icon
           style={styles.cartIcon}
           name={'shopping-cart'}
-          size={25}
-          color="#fff"
+          {...commonIconProps}
         />
       </View>
     </View>

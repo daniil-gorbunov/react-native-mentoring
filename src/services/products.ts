@@ -20,14 +20,16 @@ export interface Product {
   };
 }
 
+const BASE_PRODUCT_FIELDS =
+  'name,price,display_price,compare_at_price,display_compare_at_price';
+
 export const getProducts = async (): Promise<Product[]> => {
   const {
     data: {data},
   } = await axios.get(`${BASE_URL}/products`, {
     params: {
       include: 'images',
-      'fields[product]':
-        'name,price,display_price,compare_at_price,display_compare_at_price',
+      'fields[product]': BASE_PRODUCT_FIELDS,
     },
   });
 
@@ -40,8 +42,7 @@ export const getProduct = async (id: string): Promise<Product | undefined> => {
   } = await axios.get(`${BASE_URL}/products/${id}`, {
     params: {
       include: 'images,option_types',
-      'fields[product]':
-        'name,price,display_price,compare_at_price,display_compare_at_price,description',
+      'fields[product]': `${BASE_PRODUCT_FIELDS},description`,
     },
   });
 
