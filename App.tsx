@@ -14,9 +14,22 @@ export type RootStackParamList = {
   ProductDetails: {productId: string};
 };
 
-const CartIcon = () => (
-  <Icon style={styles.cartIcon} name={'shopping-cart'} size={25} color="#fff" />
-);
+const HeaderIcons: React.FC<{showFavButton?: boolean}> = ({showFavButton}) => {
+  const ICON_SIZE = 25;
+  const ICON_COLOR = '#fff';
+  const commonIconProps = {size: ICON_SIZE, color: ICON_COLOR};
+
+  return (
+    <View style={styles.headerIcons}>
+      {showFavButton && <Icon name={'favorite-border'} {...commonIconProps} />}
+      <Icon
+        style={styles.cartIcon}
+        name={'shopping-cart'}
+        {...commonIconProps}
+      />
+    </View>
+  );
+};
 
 export const App = () => {
   return (
@@ -34,11 +47,7 @@ export const App = () => {
               component={Main}
               options={{
                 title: 'Ecommerce Store',
-                headerRight: () => (
-                  <View style={styles.headerIcons}>
-                    <CartIcon />
-                  </View>
-                ),
+                headerRight: () => <HeaderIcons />,
               }}
             />
             <Screen
@@ -46,12 +55,7 @@ export const App = () => {
               component={ProductDetails}
               options={{
                 title: '',
-                headerRight: () => (
-                  <View style={styles.headerIcons}>
-                    <Icon name={'favorite-border'} size={25} color="#fff" />
-                    <CartIcon />
-                  </View>
-                ),
+                headerRight: () => <HeaderIcons showFavButton={true} />,
               }}
             />
           </Group>
