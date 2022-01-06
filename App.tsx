@@ -7,7 +7,7 @@ import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {Main, ProductDetails} from 'screens';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const {Navigator, Group, Screen} = createStackNavigator();
+const Stack = createStackNavigator();
 
 export type RootStackParamList = {
   Main: undefined;
@@ -35,14 +35,14 @@ export const App = () => {
   return (
     <SafeAreaView style={styles.appArea}>
       <NavigationContainer>
-        <Navigator>
-          <Group
+        <Stack.Navigator>
+          <Stack.Group
             screenOptions={{
               headerStyle: styles.header,
               headerTitleStyle: styles.headerTitle,
               headerTintColor: '#fff',
             }}>
-            <Screen
+            <Stack.Screen
               name="Main"
               component={Main}
               options={{
@@ -50,7 +50,7 @@ export const App = () => {
                 headerRight: () => <HeaderIcons />,
               }}
             />
-            <Screen
+            <Stack.Screen
               name="ProductDetails"
               component={ProductDetails}
               options={{
@@ -58,8 +58,8 @@ export const App = () => {
                 headerRight: () => <HeaderIcons showFavButton={true} />,
               }}
             />
-          </Group>
-        </Navigator>
+          </Stack.Group>
+        </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
   );
