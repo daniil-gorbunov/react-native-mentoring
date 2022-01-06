@@ -1,9 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
-import {AppBar, ProductCard, SearchBar} from 'components';
+import {StackScreenProps} from '@react-navigation/stack';
+import {ProductCard, SearchBar} from 'components';
 import {getProducts, Product} from 'services/products';
 
-export const Main: React.FC = () => {
+import {RootStackParamList} from '../../../App';
+
+export const Main: React.FC<StackScreenProps<RootStackParamList, 'Main'>> = ({
+  navigation,
+}) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -24,7 +29,6 @@ export const Main: React.FC = () => {
 
   return (
     <View style={styles.screenContainer}>
-      <AppBar title={'Ecommerce Store'} />
       <FlatList
         ListHeaderComponent={<SearchBar />}
         refreshControl={
@@ -34,7 +38,15 @@ export const Main: React.FC = () => {
         stickyHeaderIndices={[0]}
         numColumns={2}
         data={products}
-        renderItem={({item}) => <ProductCard key={item.id} product={item} />}
+        renderItem={({item}) => (
+          <ProductCard
+            key={item.id}
+            product={item}
+            onPress={product =>
+              navigation.navigate('ProductDetails', {productId: product.id})
+            }
+          />
+        )}
       />
     </View>
   );

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {AppBar, ColorPicker, Gallery, PriceLine, Section} from 'components';
+import {ColorPicker, Gallery, PriceLine, Section} from 'components';
 import {
   Button,
   RefreshControl,
@@ -10,31 +10,34 @@ import {
 } from 'react-native';
 import {getProduct} from 'services';
 import {Product} from 'services/products';
+import {StackScreenProps} from '@react-navigation/stack';
 
-const PRODUCT_ID = '1';
+import {RootStackParamList} from '../../../App';
 
-export const ProductDetails: React.FC = () => {
+export const ProductDetails: React.FC<
+  StackScreenProps<RootStackParamList, 'ProductDetails'>
+> = ({route}) => {
+  const {productId} = route.params;
   const [product, setProduct] = useState<Product>();
   const [refreshing, setRefreshing] = useState(false);
 
-  const fetchProduct = useCallback(async (productId: string) => {
+  const fetchProduct = useCallback(async (id: string) => {
     setRefreshing(true);
-    const nextProduct = await getProduct(productId);
+    const nextProduct = await getProduct(id);
     setRefreshing(false);
     setProduct(nextProduct);
   }, []);
 
   const onRefresh = useCallback(() => {
-    fetchProduct(PRODUCT_ID);
-  }, [fetchProduct]);
+    fetchProduct(productId);
+  }, [fetchProduct, productId]);
 
   useEffect(() => {
-    fetchProduct(PRODUCT_ID);
-  }, [fetchProduct]);
+    fetchProduct(productId);
+  }, [fetchProduct, productId]);
 
   return (
     <View style={styles.screenContainer}>
-      <AppBar showFavButton={true} />
       {product && (
         <>
           <ScrollView
