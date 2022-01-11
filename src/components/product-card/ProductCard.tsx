@@ -1,14 +1,15 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Product} from 'services/products';
 import {PriceLine} from 'components';
 
 interface ProductCardProps {
   product: Product;
+  onPress: (productId: string) => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({
-  product: {
+export const ProductCard: React.FC<ProductCardProps> = ({product, onPress}) => {
+  const {
     id,
     attributes: {
       name,
@@ -17,10 +18,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       compare_at_price: compareAtPrice,
       display_compare_at_price: displayCompareAtPrice,
     },
-  },
-}) => {
+  } = product;
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={() => onPress(product.id)}>
       <Image
         style={styles.image}
         source={{uri: `https://picsum.photos/seed/${id}/100/100`}}
@@ -34,7 +34,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           displayCompareAtPrice={displayCompareAtPrice}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
