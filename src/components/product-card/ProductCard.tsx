@@ -5,7 +5,7 @@ import {PriceLine} from 'components';
 
 interface ProductCardProps {
   product: Product;
-  onPress: (product: Product) => void;
+  onPress: (productId: string) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({product, onPress}) => {
@@ -20,7 +20,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({product, onPress}) => {
     },
   } = product;
   return (
-    <TouchableOpacity style={styles.card} onPress={() => onPress(product)}>
+    <TouchableOpacity style={styles.card} onPress={() => onPress(product.id)}>
       <Image
         style={styles.image}
         source={{uri: `https://picsum.photos/seed/${id}/100/100`}}

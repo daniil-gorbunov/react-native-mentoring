@@ -42,8 +42,8 @@ export const Main: React.FC<StackScreenProps<RootStackParamList, 'Main'>> = ({
           <ProductCard
             key={item.id}
             product={item}
-            onPress={product =>
-              navigation.navigate('ProductDetails', {productId: product.id})
+            onPress={productId =>
+              navigation.navigate('ProductDetails', {productId})
             }
           />
         )}
